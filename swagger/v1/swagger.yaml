@@ -1,0 +1,34 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/storage":
+    get:
+      summary: Lists all files
+      tags:
+      - Storage
+      responses:
+        '200':
+          description: files found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    file_type:
+                      type: string
+                    size:
+                      type: integer
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com

@@ -7,20 +7,13 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   concern :api_base do
-    resources :blobs
-    # resources :auth
   end
 
     namespace :api do
       namespace :v1 do
         concerns :api_base
-        # Auth
-        # post "auth/login", to: "auth#login"
-        # post "auth/register", to: "auth#register"
-        # post "auth/logout", to: "auth#logout"
         # post "blobs", to: "blobs#upload"
         # get "blobs/:id", to: "blobs#get"
-
         constraints Rodauth::Rails.authenticate do
           # Blobs
           post "blobs", to: "blobs#upload"

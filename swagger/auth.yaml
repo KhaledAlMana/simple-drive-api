@@ -1,0 +1,192 @@
+openapi: 3.0.1
+info:
+  title: Auth API
+  description: This lists all the endpoints provided by Rodauth features.
+  version: 2.38.0
+externalDocs:
+  description: Rodauth documentation
+  url: https://rodauth.jeremyevans.net/documentation.html
+tags:
+- name: Login
+  externalDocs:
+    description: Feature documentation
+    url: http://rodauth.jeremyevans.net/rdoc/files/doc/login_rdoc.html
+- name: Create Account
+  externalDocs:
+    description: Feature documentation
+    url: http://rodauth.jeremyevans.net/rdoc/files/doc/create_account_rdoc.html
+- name: Logout
+  externalDocs:
+    description: Feature documentation
+    url: http://rodauth.jeremyevans.net/rdoc/files/doc/logout_rdoc.html
+- name: Lockout
+  externalDocs:
+    description: Feature documentation
+    url: http://rodauth.jeremyevans.net/rdoc/files/doc/lockout_rdoc.html
+paths:
+  "/login":
+    post:
+      tags:
+      - Login
+      summary: Perform login
+      description: |
+        ```ruby
+        rodauth.login_route #=> "login"
+        rodauth.login_path #=> "/login"
+        rodauth.login_url #=> "https://example.com/login"
+
+        rodauth.current_route #=> :login (in the request)
+        ```
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                  example: user@example.com
+                  description: Email address for the account
+                password:
+                  type: string
+                  example: secret123
+                  description: Password for the account
+              required:
+                - login
+                - password
+      responses:
+        '200':
+          description: successful login
+        '401':
+          description: no matching login, invalid password
+        '403':
+          description: unverified account, account locked out
+  "/create-account":
+    post:
+      tags:
+      - Create Account
+      summary: Perform registration
+      description: |
+        ```ruby
+        rodauth.create_account_route #=> "create-account"
+        rodauth.create_account_path #=> "/create-account"
+        rodauth.create_account_url #=> "https://example.com/create-account"
+
+        rodauth.current_route #=> :create_account (in the request)
+        ```
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                  example: user@example.com
+                  description: Email address for the account
+                login-confirm:
+                  type: string
+                  example: user@example.com
+                  description: Email address confirmation
+                password:
+                  type: string
+                  example: secret123
+                  description: Password to set
+                password-confirm:
+                  type: string
+                  example: secret123
+                  description: Password confirmation
+              required:
+                - login
+                - login-confirm
+                - password
+                - password-confirm
+      responses:
+        '200':
+          description: successful registration
+        '422':
+          description: invalid login, logins do not match, invalid password, passwords
+            do not match
+  "/logout":
+    post:
+      tags:
+      - Logout
+      summary: Perform logout
+      description: |
+        ```ruby
+        rodauth.logout_route #=> "logout"
+        rodauth.logout_path #=> "/logout"
+        rodauth.logout_url #=> "https://example.com/logout"
+
+        rodauth.current_route #=> :logout (in the request)
+        ```
+      responses:
+        '200':
+          description: successful logout
+      parameters: []
+  "/unlock-account-request":
+    post:
+      tags:
+      - Lockout
+      summary: Perform account unlock request
+      description: |
+        ```ruby
+        rodauth.unlock_account_request_route #=> "unlock-account-request"
+        rodauth.unlock_account_request_path #=> "/unlock-account-request"
+        rodauth.unlock_account_request_url #=> "https://example.com/unlock-account-request"
+
+        rodauth.current_route #=> :unlock_account_request (in the request)
+        ```
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                  example: user@example.com
+                  description: Email address for the account
+              required:
+                - login
+      responses:
+        '200':
+          description: successfully sent unlock account email
+        '401':
+          description: no matching login
+        '400':
+          description: email recently sent
+  "/unlock-account":
+    post:
+      tags:
+      - Lockout
+      summary: Perform account unlock
+      description: |
+        ```ruby
+        rodauth.unlock_account_route #=> "unlock-account"
+        rodauth.unlock_account_path #=> "/unlock-account"
+        rodauth.unlock_account_url #=> "https://example.com/unlock-account"
+
+        rodauth.current_route #=> :unlock_account (in the request)
+        ```
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key:
+                  type: string
+                  example: "{account_id}_{key_hmac}"
+                  description: Account unlock token
+              required:
+                - key
+      responses:
+        '200':
+          description: account successfully unlocked
+        '401':
+          description: invalid or expired unlock account key

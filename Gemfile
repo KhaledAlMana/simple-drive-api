@@ -33,30 +33,10 @@ gem "thruster", require: false
 # gem "image_processing", "~> 1.2"
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
-# gem "rack-cors"
+gem "rack-cors"
 
-# Swagger API documentation - For demo purposes only and not recommended for production. -- Khaled
-gem "rswag"
-gem "rspec-rails" # if you're using rspec for testing your controllers
-
+# Audit changes in models
 gem "audited"
-
-group :development, :test do
-  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
-
-  # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
-  gem "brakeman", require: false
-
-  # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
-  gem "rubocop-rails-omakase", require: false
-
-  # Coverage test results
-  gem "simplecov", "=0.21.2"
-
-  # Live reload for development
-  gem "rails_live_reload"
-end
 
 gem "rodauth-rails", "~> 2.0"
 # Enables Sequel to use Active Record's database connection
@@ -67,3 +47,26 @@ gem "bcrypt", "~> 3.1"
 gem "jwt", "~> 2.9"
 # Used by Rodauth for rendering built-in view and email templates
 gem "tilt", "~> 2.4"
+
+# Swagger API documentation - For demo purposes only and not recommended for production. -- Khaled
+gem "rswag"
+gem "rspec-rails" # if you're using rspec for testing your controllers
+gem "rodauth-openapi", "~> 0.2.0", group: :development
+
+
+group :development, :test do
+    # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+    gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+
+    # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
+    gem "brakeman", require: false
+
+    # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
+    gem "rubocop-rails-omakase", require: false
+
+    # Coverage test results
+    gem "simplecov", "=0.21.2"
+
+    # Live reload for development
+    gem "rails_live_reload"
+  end

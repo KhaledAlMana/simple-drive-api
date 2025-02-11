@@ -1,33 +1,39 @@
 ---
 openapi: 3.0.1
 info:
-  title: API V1
+  title: Simple Drive API V1
   version: v1
+components:
+  contentType: application/json
+  headers:
+    contentType:
+      description: content type
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      description: JWT Token
+      name: Authorization
+      in: header
+      type: bearer
+      bearerFormat: JWT
 paths:
-  "/api/v1/auth/login":
-    post:
-      summary: login auth
-      responses:
-        '200':
-          description: successful
-  "/api/v1/auth/register":
-    post:
-      summary: register auth
-      responses:
-        '200':
-          description: successful
-  "/api/v1/auth/logout":
-    post:
-      summary: logout auth
-      responses:
-        '200':
-          description: successful
   "/api/v1/blobs":
     post:
       summary: upload blob
+      security:
+      - bearerAuth:
+          description: JWT Token
+          name: Authorization
+          in: header
+          type: bearer
+          bearerFormat: JWT
+      parameters: []
       responses:
-        '200':
-          description: successful
+        '201':
+          description: ''
+        '401':
+          description: unauthorized
   "/api/v1/blobs/{id}":
     parameters:
     - name: id
@@ -38,11 +44,23 @@ paths:
         type: string
     get:
       summary: get blob
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        description: Bearer token
+        schema:
+          type: string
       responses:
         '200':
           description: successful
+        '401':
+          description: unauthorized
 servers:
 - url: http://{defaultHost}
+  description: Local server
   variables:
     defaultHost:
       default: localhost:3000

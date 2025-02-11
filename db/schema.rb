@@ -10,11 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_10_125759) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_11_090728) do
+  create_table "account_jwt_refresh_keys", force: :cascade do |t|
+    t.integer "account_id", null: false
+    t.string "key", null: false
+    t.datetime "deadline", null: false
+    t.index ["account_id"], name: "index_account_jwt_refresh_keys_on_account_id"
+  end
+
+  create_table "account_lockouts", force: :cascade do |t|
+    t.string "key", null: false
+    t.datetime "deadline", null: false
+    t.datetime "email_last_sent"
+  end
+
   create_table "account_login_change_keys", force: :cascade do |t|
     t.string "key", null: false
     t.string "login", null: false
     t.datetime "deadline", null: false
+  end
+
+  create_table "account_login_failures", force: :cascade do |t|
+    t.integer "number", default: 1, null: false
   end
 
   create_table "account_password_reset_keys", force: :cascade do |t|
@@ -58,7 +75,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_10_125759) do
     t.index ["user_id", "user_type"], name: "user_index"
   end
 
+  add_foreign_key "account_jwt_refresh_keys", "accounts"
+  add_foreign_key "account_lockouts", "accounts", column: "id"
   add_foreign_key "account_login_change_keys", "accounts", column: "id"
+  add_foreign_key "account_login_failures", "accounts", column: "id"
   add_foreign_key "account_password_reset_keys", "accounts", column: "id"
   add_foreign_key "account_verification_keys", "accounts", column: "id"
 end

@@ -4,31 +4,45 @@ info:
   title: API V1
   version: v1
 paths:
-  "/api/v1/storage":
-    get:
-      summary: Lists all files
-      tags:
-      - Storage
+  "/api/v1/auth/login":
+    post:
+      summary: login auth
       responses:
         '200':
-          description: files found
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    name:
-                      type: string
-                    file_type:
-                      type: string
-                    size:
-                      type: integer
+          description: successful
+  "/api/v1/auth/register":
+    post:
+      summary: register auth
+      responses:
+        '200':
+          description: successful
+  "/api/v1/auth/logout":
+    post:
+      summary: logout auth
+      responses:
+        '200':
+          description: successful
+  "/api/v1/blobs":
+    post:
+      summary: upload blob
+      responses:
+        '200':
+          description: successful
+  "/api/v1/blobs/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: get blob
+      responses:
+        '200':
+          description: successful
 servers:
-- url: https://{defaultHost}
+- url: http://{defaultHost}
   variables:
     defaultHost:
-      default: www.example.com
+      default: localhost:3000

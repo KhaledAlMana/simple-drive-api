@@ -18,4 +18,8 @@ class ApplicationController < ActionController::API
   def api_version
     @api_version
   end
+
+  def current_account
+    rodauth.rails_account
+  end
 end

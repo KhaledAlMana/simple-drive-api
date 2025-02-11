@@ -21,13 +21,14 @@ RSpec.configure do |config|
         title: 'API V1',
         version: 'v1'
       },
+      security: [ Rswag::Helpers::SecurityScheme.security ],
       paths: {},
       servers: [
         {
-          url: 'https://{defaultHost}',
+          url: 'http://{defaultHost}',
           variables: {
             defaultHost: {
-              default: 'www.example.com'
+              default: 'localhost:3000'
             }
           }
         }

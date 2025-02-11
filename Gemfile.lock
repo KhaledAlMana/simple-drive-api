@@ -75,7 +75,11 @@ GEM
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     ast (2.4.2)
+    audited (5.8.0)
+      activerecord (>= 5.2, < 8.2)
+      activesupport (>= 5.2, < 8.2)
     base64 (0.2.0)
+    bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.1)
     benchmark (0.4.0)
     bigdecimal (3.1.9)
@@ -122,6 +126,8 @@ GEM
     json-schema (5.1.1)
       addressable (~> 2.8)
       bigdecimal (~> 3.1)
+    jwt (2.10.1)
+      base64
     kamal (2.5.2)
       activesupport (>= 7.0)
       base64 (~> 0.2)
@@ -247,6 +253,18 @@ GEM
     regexp_parser (2.10.0)
     reline (0.6.0)
       io-console (~> 0.5)
+    roda (3.88.0)
+      rack
+    rodauth (2.38.0)
+      roda (>= 2.6.0)
+      sequel (>= 4)
+    rodauth-model (0.4.0)
+      rodauth (~> 2.28)
+    rodauth-rails (2.0.2)
+      railties (>= 5.0, < 8.1)
+      roda (~> 3.76)
+      rodauth (~> 2.36)
+      rodauth-model (~> 0.2)
     rspec-core (3.13.3)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.3)
@@ -309,6 +327,11 @@ GEM
       rubocop-rails
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
+    sequel (5.89.0)
+      bigdecimal
+    sequel-activerecord_connection (2.0.0)
+      activerecord (>= 5.0, < 8.1)
+      sequel (~> 5.38)
     simplecov (0.21.2)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -351,6 +374,7 @@ GEM
     thruster (0.1.10-aarch64-linux)
     thruster (0.1.10-arm64-darwin)
     thruster (0.1.10-x86_64-linux)
+    tilt (2.6.0)
     timeout (0.4.3)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
@@ -377,22 +401,28 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  audited
+  bcrypt (~> 3.1)
   bootsnap
   brakeman
   debug
+  jwt (~> 2.9)
   kamal
   puma (>= 5.0)
   rails (~> 8.0.1)
   rails_live_reload
+  rodauth-rails (~> 2.0)
   rspec-rails
   rswag
   rubocop-rails-omakase
+  sequel-activerecord_connection (~> 2.0)
   simplecov (= 0.21.2)
   solid_cable
   solid_cache
   solid_queue
   sqlite3 (>= 2.1)
   thruster
+  tilt (~> 2.4)
   tzinfo-data
 
 BUNDLED WITH

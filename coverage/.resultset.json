@@ -1,55 +1,25 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/khaledalmana/Documents/projects/simple-drive-api/app/controllers/api/v1/storage_controller.rb": {
+      "/Users/khaledalmana/Documents/projects/simple-drive-api/app/controllers/api/v1/blobs_controller.rb": {
         "lines": [
-          null,
-          0,
-          0,
-          0,
-          null,
-          0,
-          0,
-          0,
           0,
           null,
           0,
           0,
           0,
           null,
+          null,
           0,
-          0,
+          null,
+          null,
+          null,
+          null,
+          null,
           null,
           0,
           0,
           0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          null,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
           0,
           0,
           0,
@@ -84,6 +54,55 @@
         ],
         "branches": {}
       },
+      "/Users/khaledalmana/Documents/projects/simple-drive-api/app/controllers/rodauth_controller.rb": {
+        "lines": [
+          0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          0
+        ],
+        "branches": {}
+      },
+      "/Users/khaledalmana/Documents/projects/simple-drive-api/app/dtos/auth_requst_dto.rb": {
+        "lines": [
+          0,
+          0,
+          0,
+          null,
+          0,
+          0
+        ],
+        "branches": {}
+      },
+      "/Users/khaledalmana/Documents/projects/simple-drive-api/app/dtos/auth_response_dto.rb": {
+        "lines": [
+          0,
+          0,
+          0,
+          null,
+          0,
+          null,
+          0,
+          0
+        ],
+        "branches": {}
+      },
       "/Users/khaledalmana/Documents/projects/simple-drive-api/app/jobs/application_job.rb": {
         "lines": [
           0,
@@ -96,10 +115,128 @@
         ],
         "branches": {}
       },
+      "/Users/khaledalmana/Documents/projects/simple-drive-api/app/lib/rodauth_app.rb": {
+        "lines": [
+          0,
+          0,
+          0,
+          null,
+          null,
+          0,
+          0,
+          null,
+          null,
+          0,
+          0,
+          0,
+          null,
+          null,
+          0,
+          null,
+          null,
+          0,
+          0,
+          null,
+          null,
+          0,
+          null,
+          null,
+          0,
+          null,
+          0,
+          0,
+          0
+        ],
+        "branches": {}
+      },
       "/Users/khaledalmana/Documents/projects/simple-drive-api/app/mailers/application_mailer.rb": {
         "lines": [
           0,
           0,
+          0,
+          0
+        ],
+        "branches": {}
+      },
+      "/Users/khaledalmana/Documents/projects/simple-drive-api/app/misc/rodauth_app.rb": {
+        "lines": [
+          0,
+          null,
+          0,
+          null,
+          null,
+          null,
+          null,
+          0,
+          0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          0,
+          0
+        ],
+        "branches": {}
+      },
+      "/Users/khaledalmana/Documents/projects/simple-drive-api/app/misc/rodauth_main.rb": {
+        "lines": [
+          0,
+          null,
+          0,
+          0,
+          null,
+          0,
+          0,
+          0,
+          0,
+          0,
+          null,
+          null,
+          0,
+          null,
+          null,
+          0,
+          null,
+          null,
+          0,
+          0,
+          0,
+          0,
+          null,
+          null,
+          0,
+          0,
+          0,
+          null,
+          null,
+          0,
+          0,
+          null,
+          null,
+          0,
+          0,
+          0,
+          0
+        ],
+        "branches": {}
+      },
+      "/Users/khaledalmana/Documents/projects/simple-drive-api/app/models/account.rb": {
+        "lines": [
+          0,
+          0,
+          null,
+          0,
+          0,
+          null,
+          null,
           0,
           0
         ],
@@ -114,6 +251,6 @@
         "branches": {}
       }
     },
-    "timestamp": 1739188922
+    "timestamp": 1739256942
   }
 }

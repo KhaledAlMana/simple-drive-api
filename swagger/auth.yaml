@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: Auth API
+  title: Rodauth
   description: This lists all the endpoints provided by Rodauth features.
   version: 2.38.0
 externalDocs:
@@ -23,6 +23,10 @@ tags:
   externalDocs:
     description: Feature documentation
     url: http://rodauth.jeremyevans.net/rdoc/files/doc/lockout_rdoc.html
+- name: JWT Refresh
+  externalDocs:
+    description: Feature documentation
+    url: http://rodauth.jeremyevans.net/rdoc/files/doc/jwt_refresh_rdoc.html
 paths:
   "/login":
     post:
@@ -37,24 +41,6 @@ paths:
 
         rodauth.current_route #=> :login (in the request)
         ```
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                login:
-                  type: string
-                  example: user@example.com
-                  description: Email address for the account
-                password:
-                  type: string
-                  example: secret123
-                  description: Password for the account
-              required:
-                - login
-                - password
       responses:
         '200':
           description: successful login
@@ -62,6 +48,23 @@ paths:
           description: no matching login, invalid password
         '403':
           description: unverified account, account locked out
+      parameters:
+      - name: login
+        in: query
+        description: Email address for the account
+        required: true
+        style: form
+        example: user@example.com
+        schema:
+          type: string
+      - name: password
+        in: query
+        description: Password for the account
+        required: true
+        style: form
+        example: secret123
+        schema:
+          type: string
   "/create-account":
     post:
       tags:
@@ -75,40 +78,45 @@ paths:
 
         rodauth.current_route #=> :create_account (in the request)
         ```
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                login:
-                  type: string
-                  example: user@example.com
-                  description: Email address for the account
-                login-confirm:
-                  type: string
-                  example: user@example.com
-                  description: Email address confirmation
-                password:
-                  type: string
-                  example: secret123
-                  description: Password to set
-                password-confirm:
-                  type: string
-                  example: secret123
-                  description: Password confirmation
-              required:
-                - login
-                - login-confirm
-                - password
-                - password-confirm
       responses:
         '200':
           description: successful registration
         '422':
           description: invalid login, logins do not match, invalid password, passwords
             do not match
+      parameters:
+      - name: login
+        in: query
+        description: Email address for the account
+        required: true
+        style: form
+        example: user@example.com
+        schema:
+          type: string
+      - name: login-confirm
+        in: query
+        description: Email address confirmation
+        required: true
+        style: form
+        example: user@example.com
+        schema:
+          type: string
+      - name: password
+        in: query
+        description: Password to set
+        required: true
+        style: form
+        example: secret123
+        schema:
+          type: string
+      - name: password-confirm
+        in: query
+        description: Password confirmation
+        required: true
+        style: form
+        example: secret123
+        schema:
+          type: string
   "/logout":
     post:
       tags:
@@ -125,7 +133,14 @@ paths:
       responses:
         '200':
           description: successful logout
-      parameters: []
+      parameters:
+      - name: refresh_token
+        in: query
+        description: JWT refresh token to delete ("all" deletes all tokens)
+        required: false
+        style: form
+        schema:
+          type: string
   "/unlock-account-request":
     post:
       tags:
@@ -139,19 +154,6 @@ paths:
 
         rodauth.current_route #=> :unlock_account_request (in the request)
         ```
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                login:
-                  type: string
-                  example: user@example.com
-                  description: Email address for the account
-              required:
-                - login
       responses:
         '200':
           description: successfully sent unlock account email
@@ -159,6 +161,15 @@ paths:
           description: no matching login
         '400':
           description: email recently sent
+      parameters:
+      - name: login
+        in: query
+        description: Email address for the account
+        required: true
+        style: form
+        example: user@example.com
+        schema:
+          type: string
   "/unlock-account":
     post:
       tags:
@@ -172,21 +183,50 @@ paths:
 
         rodauth.current_route #=> :unlock_account (in the request)
         ```
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                key:
-                  type: string
-                  example: "{account_id}_{key_hmac}"
-                  description: Account unlock token
-              required:
-                - key
       responses:
         '200':
           description: account successfully unlocked
         '401':
           description: invalid or expired unlock account key
+      parameters:
+      - name: key
+        in: query
+        description: Account unlock token
+        required: true
+        style: form
+        example: "{account_id}_{key_hmac}"
+        schema:
+          type: string
+  "/jwt-refresh":
+    post:
+      tags:
+      - JWT Refresh
+      summary: Refresh JWT access token
+      description: |
+        ```ruby
+        rodauth.jwt_refresh_route #=> "jwt-refresh"
+        rodauth.jwt_refresh_path #=> "/jwt-refresh"
+        rodauth.jwt_refresh_url #=> "https://example.com/jwt-refresh"
+
+        rodauth.current_route #=> :jwt_refresh (in the request)
+        ```
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+                refresh_token: "..."
+                access_token: "..."
+        '401':
+          description: no JWT access token provided
+        '400':
+          description: invalid JWT refresh token
+      parameters:
+      - name: refresh_token
+        in: query
+        description: JWT refresh token
+        required: true
+        style: form
+        schema:
+          type: string

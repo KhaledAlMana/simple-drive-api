@@ -10,7 +10,7 @@ gem "puma", ">= 5.0"
 # gem "jbuilder"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
+gem "bcrypt", "~> 3.1"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
@@ -35,23 +35,18 @@ gem "thruster", require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 gem "rack-cors"
 
-# Audit changes in models
-gem "audited"
-
 gem "rodauth-rails", "~> 2.0"
 # Enables Sequel to use Active Record's database connection
 gem "sequel-activerecord_connection", "~> 2.0"
-# Used by Rodauth for password hashing
-gem "bcrypt", "~> 3.1"
 # Used by Rodauth for JWT support
 gem "jwt", "~> 2.9"
 # Used by Rodauth for rendering built-in view and email templates
 gem "tilt", "~> 2.4"
 
-# Swagger API documentation - For demo purposes only and not recommended for production. -- Khaled
-gem "rswag"
+# API documentation - For demo purposes only and not recommended for production. -- Khaled
 gem "rspec-rails" # if you're using rspec for testing your controllers
 gem "rodauth-openapi", "~> 0.2.0", group: :development
+gem "oas_rails"
 
 
 group :development, :test do

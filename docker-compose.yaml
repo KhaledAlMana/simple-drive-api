@@ -10,7 +10,7 @@ services:
             RAILS_MAX_THREADS: 5
             DATABASE_URL: sqlite3:///storage/development.sqlite3
             STORAGE_OPTION: local # Optional: Set to "local", "db", "s3" or "ftp" to enable storage (default: "local")
-            STORAGE_PATH: /storage # Optional: Set to the path where files are stored (default: "/storage")
+            STORAGE_LOCAL_PATH: /storage # Optional: Set to the path where files are stored incase of local (default: "/storage")
             STORAGE_S3_BUCKET: # Optional: Set to the S3 bucket name (default: "")
             STORAGE_S3_REGION: # Optional: Set to the S3 region (default: "")
             STORAGE_S3_ACCESS_KEY_ID: # Optional: Set to the S3 access key ID (default: "")
@@ -22,5 +22,4 @@ services:
             STORAGE_FTP_PASSWORD: # Optional: Set to the FTP password (default: "")
             STORAGE_FTP_PATH: # Optional: Set to the FTP path (default: "")
             STORAGE_FTP_PASSIVE: # Optional: Set to "true" to enable passive mode (default: "")
-            RODAUTH_JWT_SECRET: your_jwt_secret_here  # Add this line
-            RODAUTH_HMAC_SECRET: your_hmac_secret_here  # Add this line
+            SECRET_KEY_BASE: your_jwt_secret_here  # FOR JWT & HMAC

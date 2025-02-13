@@ -5,23 +5,22 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-
   concern :api_base do
   end
 
-    namespace :api do
-      namespace :v1 do
-        concerns :api_base
-        # post "blobs", to: "blobs#upload"
-        # get "blobs/:id", to: "blobs#get"
-        constraints Rodauth::Rails.authenticate do
-          # Blobs
-          post "blobs", to: "blobs#upload"
-          get "blobs/:id", to: "blobs#get"
-        end
+  namespace :api do
+    namespace :v1 do
+      concerns :api_base
+      post "auth/login", to: "auth#login", as: :login
+      delete "auth/logout", to: "auth#logout", as: :logout
+      post "auth/register", to: "auth#create_account", as: :register
+      post "auth/refresh-token", to: "auth#refresh_token", as: :refresh_token
+      constraints Rodauth::Rails.authenticate do
+        # Blobs
+        post "blobs", to: "blobs#upload"
+        get "blobs/:key", to: "blobs#download"
+      end
     end
   end
-
-  mount Rswag::Api::Engine => "api-docs"
-  mount Rswag::Ui::Engine => "api-docs"
+  mount OasRails::Engine => "/docs"
 end

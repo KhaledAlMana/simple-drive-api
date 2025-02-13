@@ -1,22 +1,28 @@
 class Api::V1::BlobsController < ApplicationController
-    # POST /api/v1/blobs
-    def upload
-      render status: :created
+  # Blob upload
+  # @request_body id [String] The unique identifier for the blob
+  # @request_body data [String] The base64-encoded blob data
+  def upload
+    dto = upload_blob_request_dto
+    unless dto.valid?
+      return APIResponse.error_response(dto.errors, :bad_request)
     end
+     render Features::Blobs::Upload.new(dto).call
+  end
 
-    # GET /api/v1/blobs/:id
-    def get
-      # mock data {
-      # "id": "any_valid_string_or_identifier",
-      # "data": "SGVsbG8gU2ltcGxlIFN0b3JhZ2UgV29ybGQh",
-      # "size": "27",
-      # "created_at": "2023-01-22T21:37:55Z"
-      # }
-      render json: {
-        id: "any_valid_string_or_identifier",
-        data: "SGVsbG8gU2ltcGxlIFN0b3JhZ2UgV29ybGQh",
-        size: "27",
-        created_at: "2023-01-22T21:37:55Z"
-      }
+  # Blob download
+  # @parameter key(path) [String] The unique identifier for the blob.
+  def download
+    dto = ::GetBlobRequestDTO.new(key: params[:key])
+    unless dto.valid?
+      return ::APIResponse.error_response(dto.errors, :bad_request)
     end
+    render ::Features::Blobs::Download.new(dto).call
+  end
+
+  private
+  def upload_blob_request_dto
+    UploadBlobRequestDTO.new(id: params.require(:blob).permit(:id, :data)[:id],
+                data: params.require(:blob).permit(:id, :data)[:data])
+  end
 end

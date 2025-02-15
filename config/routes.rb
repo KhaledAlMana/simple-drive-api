@@ -12,13 +12,13 @@ Rails.application.routes.draw do
     namespace :v1 do
       concerns :api_base
       post "auth/login", to: "auth#login", as: :login
-      delete "auth/logout", to: "auth#logout", as: :logout
+      post "auth/logout", to: "auth#logout", as: :logout
       post "auth/register", to: "auth#create_account", as: :register
       post "auth/refresh-token", to: "auth#refresh_token", as: :refresh_token
       constraints Rodauth::Rails.authenticate do
         # Blobs
         post "blobs", to: "blobs#upload"
-        get "blobs/:key", to: "blobs#download"
+        get "blobs/:id", to: "blobs#download"
       end
     end
   end

@@ -18,7 +18,7 @@ module StorageType
     TYPES.key?(storage.to_sym)
   end
 
-  def getSelectedStorageType
+  def get_selected_storage_type
     STORAGE_TYPE
   end
 

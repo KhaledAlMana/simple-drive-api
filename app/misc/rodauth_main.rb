@@ -43,6 +43,7 @@ class RodauthMain < Rodauth::Rails::Auth
     allow_refresh_with_expired_jwt_access_token? false
     no_matching_login_message "Invalid login credentials"
     invalid_password_message "Invalid login credentials"
+    json_response_field_error_key "errors"
 
     # Rate limiting
     max_invalid_logins 5

@@ -1,4 +1,5 @@
 require "fileutils"
+require_relative "errors"
 
 module Storage
   class LocalAdapter < BaseAdapter
@@ -9,22 +10,20 @@ module Storage
       @root_path.mkpath unless @root_path.directory?
     end
 
-    def upload(base64_data, blob_id:, **options)
-      filename = generate_filename(blob_id)
+    def upload(base64_data:, blob_id:, **options)
+      filename = ::BlobUtils.generate_filename(blob_id)
       full_path = @root_path.join(filename)
 
       begin
+        # decode before creating storage record for efficiency (33% less storage) + decoding is relatively fast
         blob = ::BlobUtils.decode_base64(base64_data)
         FileUtils.mkdir_p(full_path.dirname)
-        # Create storage record first to ensure atomicity
+
         storage = LocalStorage.create!(
-          blob_id: blob.id,
+          blob_id: blob_id,
           full_path: full_path.to_s
         )
-
-        # Write file after storage record is created
         write_file(blob, full_path)
-
         storage
       rescue ActiveRecord::RecordInvalid => e
         Rails.logger.error "LocalAdapter#upload failed (RecordInvalid): #{e.message}, blob_id: #{blob_id}"
@@ -37,15 +36,17 @@ module Storage
       end
     end
 
-    def download(blob_id, **)
+    def download(blob_id:)
       storage = find_storage(blob_id)
-      File.open(storage.full_path, "rb")
-    rescue Errno::ENOENT => e
+      raise BlobNotFoundError, "Storage record not found for blob_id: #{blob_id}" unless storage
+      raise BlobNotFoundError, "File not found at #{storage.full_path}" unless File.exist?(storage.full_path)
+      ::BlobUtils.encode_base64(File.read(storage.full_path))
+    rescue StandardError => e
       Rails.logger.error "LocalAdapter#download failed: #{e.message}, blob_id: #{blob_id}"
-      raise BlobNotFoundError, "File not found at #{storage.full_path}"
+      raise StorageError, "Failed to download file: #{e.message}"
     end
 
-    def exists?(blob_id)
+    def exists?(blob_id:)
       storage = LocalStorage.find_by(blob_id: blob.id)
       storage.present? && File.exist?(storage.full_path)
     end
@@ -53,10 +54,6 @@ module Storage
     private
     def find_storage(blob_id)
       LocalStorage.find_by!(blob_id: blob_id)
-    end
-
-    def generate_filename(blob_id)
-      "#{blob_id}_#{Time.current.strftime('%Y%m%d%H%M%S')}"
     end
 
     def write_file(io, path)

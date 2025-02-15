@@ -1,3 +1,6 @@
+require "base64"
+require "securerandom"
+
 module BlobUtils
   class << self
     def compute_checksum(base64_data)
@@ -10,6 +13,13 @@ module BlobUtils
       StringIO.new(decoded_data)
     rescue ArgumentError => e
       raise Error, "Invalid base64 data: #{e.message}"
+    end
+    def generate_filename(blob_id)
+      "#{blob_id}_#{SecureRandom.uuid}"
+    end
+
+    def encode_base64(data)
+      Base64.strict_encode64(data)
     end
   end
 end

@@ -119,6 +119,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_12_141707) do
     t.datetime "updated_at", null: false
     t.string "bucket", null: false
     t.string "key", null: false
+    t.string "region", null: false
     t.index ["blob_id"], name: "index_s3_storages_on_blob_id", unique: true
     t.index ["deleted_at"], name: "index_s3_storages_on_deleted_at"
   end

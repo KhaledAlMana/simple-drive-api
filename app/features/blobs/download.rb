@@ -10,12 +10,12 @@ module Features
 
         blob = find_blob
         data = download_blob_data(blob)
-
-        GetBlobResponseDTO.new(
-          id: blob.id,
-          data: data,
-          size: blob.byte_size,
-          created_at: blob.created_at
+        APIResponse.json_response(
+          GetBlobResponseDTO.new(
+            id: blob.key,
+            data: data,
+            size: blob.byte_size,
+            created_at: blob.created_at)
         )
       rescue ActiveRecord::RecordNotFound
         ::APIResponse.error_response("Blob not found", :not_found)
@@ -26,15 +26,11 @@ module Features
       private
 
       def find_blob
-        BlobAggregate.find_by!(key: @dto.key)
+        BlobAggregate.find_by!(key: @dto.id) # Id here is the key of the blob
       end
 
       def download_blob_data(blob)
-        strategy = StorageStrategy.new
-        io = strategy.download(blob_id: blob.id)
-        Base64.strict_encode64(io.read)
-      ensure
-        io&.close
+        ::StorageStrategy.new.download(blob_id: blob.id, storage_type: blob.storage_type)
       end
     end
 

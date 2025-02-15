@@ -3,35 +3,23 @@ require "base64"
 class StorageStrategy
   class Error < StandardError; end
   def initialize
-    @adapter = StorageType.adapter_for(StorageType.getSelectedStorageType)
-      case StorageType.getSelectedStorageType
-      when :s3
-        @adapter = adapter.new(
-          endpoint: ENV["S3_ENDPOINT"],
-          bucket: ENV["S3_BUCKET"],
-          access_key: ENV["S3_ACCESS_KEY"],
-          secret_key: ENV["S3_SECRET_KEY"]
-        )
-      when :db
-        @adapter = adapter_class.new()
-      when :ftp
-      when :local # Since local is the default, we don't need to specify the root
-      else
-        @adapter = adapter_class.new()
-      end
+    @adapter = StorageType.adapter_for(StorageType.get_selected_storage_type).new
   end
 
-  # Upload a file to the storage service. Returns the blob id if successful, otherwise raises an error.
-  def upload(base64_data, blob_id,  **options)
+  def upload(base64_data:, blob_id:, **options)
     ::BlobUtils.decode_base64(base64_data)
-    if blob_type_id = @adapter.upload(base64_data blob_id, *options)
-      blob_type_id
+    if @adapter.upload(base64_data: base64_data, blob_id: blob_id)
+      true
     else
       raise Error, "Failed to upload file"
     end
   end
 
-  def download(key)
-    @adapter.download(key)
+  def download(blob_id:, storage_type:)
+    adapter = StorageType.adapter_for(storage_type).new
+    adapter.download(blob_id: blob_id)
+  rescue StandardError => e
+    Rails.logger.error "Download failed: #{e.message}, blob_id: #{blob_id}"
+    raise Error, "Failed to download file: #{e.message}"
   end
 end

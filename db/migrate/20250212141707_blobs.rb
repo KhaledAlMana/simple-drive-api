@@ -22,7 +22,7 @@ class Blobs < ActiveRecord::Migration[8.0]
 
     # Storage tables with common structure
     storage_tables = {
-      s3_storages: [ :bucket, :key ],
+      s3_storages: [ :bucket, :key, :region ],
       local_storages: [ :full_path ],
       ftp_storages: [ :path, :host ],
       db_storages: [ :data ]
@@ -40,7 +40,7 @@ class Blobs < ActiveRecord::Migration[8.0]
 
         # Add specific fields for each storage type
         fields.each do |field|
-          if field == :data
+          if field == :data # Data field is binary
             t.binary field, null: false
           else
             t.string field, null: false

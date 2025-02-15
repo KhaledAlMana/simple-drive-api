@@ -7,9 +7,9 @@ class UploadBlobRequestDTO
   validates :data, presence: true
   validate :validate_base64_encoding
 
-  def initialize(attributes = {})
-    @id = attributes[:id]
-    @data = attributes[:data]
+  def initialize(id:, data:)
+    @id = id
+    @data = data
   end
 
   private
@@ -18,8 +18,10 @@ class UploadBlobRequestDTO
     return if data.nil?
     begin
       Base64.strict_decode64(data)
+      true
     rescue ArgumentError
       errors.add(:data, "must be valid base64 encoded")
+      false
     end
   end
 end

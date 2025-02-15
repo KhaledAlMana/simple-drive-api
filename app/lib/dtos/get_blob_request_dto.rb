@@ -1,10 +1,10 @@
 class GetBlobRequestDTO
   include ActiveModel::Validations
-  attr_reader :key
+  attr_reader :id
 
-  validates :key, presence: true
+  validates :id, presence: true
 
-  def initialize(key: nil)
-    @key = key
+  def initialize(id: nil)
+    @id = id
   end
 end

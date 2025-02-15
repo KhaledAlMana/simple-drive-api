@@ -16,21 +16,20 @@ module Auditable
   private
 
   def set_created_by
-    puts "rodauth.rails_account: #{rodauth.rails_account}"
-    raise "No user context found for auditing" unless rodauth.rails_account?
+    raise "No user context found for auditing" unless Current.user.present?
 
     transaction do
-      self.created_by = rodauth.rails_account
-      self.updated_by = rodauth.rails_account
+      self.created_by = Current.user
+      self.updated_by = Current.user
     end
   end
 
   def set_updated_by
     return if will_save_change_to_deleted_at? # Don't update audit trail on soft delete
-    raise "No user context found for auditing" unless rodauth.rails_account.present?
+    raise "No user context found for auditing" unless Current.user.present?
 
     transaction do
-      self.updated_by = rodauth.rails_account
+      self.updated_by = Current.user
     end
   end
 end

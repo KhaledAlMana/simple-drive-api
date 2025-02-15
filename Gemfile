@@ -45,7 +45,6 @@ gem "tilt", "~> 2.4"
 
 # API documentation - For demo purposes only and not recommended for production. -- Khaled
 gem "rspec-rails" # if you're using rspec for testing your controllers
-gem "rodauth-openapi", "~> 0.2.0", group: :development
 gem "oas_rails"
 
 
@@ -64,4 +63,6 @@ group :development, :test do
 
     # Live reload for development
     gem "rails_live_reload"
+
+    gem "rodauth-openapi", "~> 0.2.0"
   end

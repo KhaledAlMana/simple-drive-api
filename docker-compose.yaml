@@ -2,13 +2,12 @@ services:
     app:
         build: .
         ports:
-            - "5000:5000"
+            - "3000:80"
         volumes:
             - ./data:/storage
         environment:
             RAILS_ENV: development
             RAILS_MAX_THREADS: 5
-            DATABASE_URL: sqlite3:///storage/development.sqlite3
             STORAGE_TYPE: local # Optional: Set to "local", "db", "s3" or "ftp" to enable storage (default: "local")
             STORAGE_LOCAL_PATH: /storage # Optional: Set to the path where files are stored incase of local (default: "/storage")
             STORAGE_S3_BUCKET: # Optional: Set to the S3 bucket name (default: "")
@@ -18,9 +17,12 @@ services:
             STORAGE_S3_ENDPOINT: # Optional: Set to the S3 endpoint (default: "")
             STORAGE_S3_FORCE_PATH_STYLE: # Optional: Set to "true" to force path style (default: false)
             STORAGE_S3_SERVICE_NAME: # Optional: Set to the S3 service name (default: "s3")
+            SECRET_KEY_BASE: your_jwt_secret_here  # FOR JWT & HMAC
+
+            # The below aren't ready yet
+            DATABASE_URL: sqlite3:///storage/development.sqlite3
             STORAGE_FTP_HOST: # Optional: Set to the FTP host (default: "")
             STORAGE_FTP_USER: # Optional: Set to the FTP user (default: "")
             STORAGE_FTP_PASSWORD: # Optional: Set to the FTP password (default: "")
             STORAGE_FTP_PATH: # Optional: Set to the FTP path (default: "")
             STORAGE_FTP_PASSIVE: # Optional: Set to "true" to enable passive mode (default: "")
-            SECRET_KEY_BASE: your_jwt_secret_here  # FOR JWT & HMAC

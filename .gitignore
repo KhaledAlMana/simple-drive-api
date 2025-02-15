@@ -33,3 +33,6 @@
 
 # Docker
 /data/*
+
+# .env - SHOULD NOT BE IN VERSION CONTROL FOR A REAL APP - Khaled
+.env

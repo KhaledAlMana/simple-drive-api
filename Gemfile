@@ -59,7 +59,7 @@ group :development, :test do
     gem "rubocop-rails-omakase", require: false
 
     # Coverage test results
-    gem "simplecov", "=0.21.2"
+    gem "simplecov", "0.22.0"
 
     # Live reload for development
     gem "rails_live_reload"
